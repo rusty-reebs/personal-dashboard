@@ -1,14 +1,12 @@
 import { useState } from "react";
 import Greeting from "./components/Greeting";
 import Todos from "./components/Todos";
-import Weather from "./components/Weather";
 
 function App() {
   return (
-    <div className="flex flex-row gap-4 bg-one h-screen">
+    <div className="grid lg:grid-cols-3 lg:grid-rows-2 p-10 gap-10 bg-one h-screen font-sans">
       <Greeting />
       <Todos />
-      <Weather />
     </div>
   );
 }

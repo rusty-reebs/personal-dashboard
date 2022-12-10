@@ -9,6 +9,9 @@ module.exports = {
       four: "#414141",
       five: "#FFFFFF",
     },
+    fontFamily: {
+      sans: ["Noto Sans", "sans-serif"],
+    },
     extend: {},
   },
   plugins: [],
