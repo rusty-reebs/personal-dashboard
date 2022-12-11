@@ -1,8 +1,5 @@
 import { Image, Loader } from "@mantine/core";
-import { useEffect, useState } from "react";
 import useSWR from "swr";
-import format from "date-fns/format";
-import { LoadingOverlay } from "@mantine/core";
 
 export default function Weather() {
   const fetcher = () =>
@@ -19,7 +16,14 @@ export default function Weather() {
     //   current: { feels_like, temp, wind_speed },
     // },
     isLoading,
-  } = useSWR(`/weather`, fetcher, { refreshInterval: 5000 });
+  } = useSWR(`/weather`, fetcher, { refreshInterval: 300000 });
+
+  const blurb = `It's ${Math.round(data?.current?.temp)}\u00B0C,
+  feels like ${Math.round(
+    data?.current?.feels_like
+  )} \u00B0C and the wind is ${Math.round(
+    data?.current?.wind_speed * 3.6
+  )} km/hr`;
 
   return (
     <div className="flex flex-col gap-4">
@@ -56,14 +60,7 @@ export default function Weather() {
               />
             </div>
           </div>
-          <p className="mx-auto">
-            It's {Math.round(data?.current?.temp)}&deg;C, feels like{" "}
-            {Math.round(data?.current?.feels_like)}
-            &deg;C and the wind is {Math.round(
-              data?.current?.wind_speed * 3.6
-            )}{" "}
-            km/hr
-          </p>
+          <p className="mx-auto">{blurb}</p>
         </div>
       )}
     </div>
