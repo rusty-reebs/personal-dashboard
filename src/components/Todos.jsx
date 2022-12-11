@@ -4,43 +4,44 @@ import { useEffect, useState } from "react";
 import { Loader } from "@mantine/core";
 
 export default function Todos() {
+  const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [isStrikeout, setIsStrikeout] = useState({ id: null, state: false });
 
   const todoist = new TodoistApi(import.meta.env.VITE_TODOIST_BEARER_TOKEN);
 
-  const useTasks = () => {
-    const [tasks, setTasks] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
-    useEffect(() => {
-      todoist
-        .getTasks({ projectId: 2287542106 })
-        .then((tasks) => {
-          console.log("get");
-          setTasks(tasks);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsError(true);
-        });
-    }, []);
-
-    return { tasks, isLoading, isError };
-  };
-
-  const { tasks, isLoading, isError } = useTasks();
+  //? put this in a setInterval?
+  useEffect(() => {
+    todoist
+      .getTasks({ projectId: 2287542106 })
+      .then((tasks) => {
+        setTasks(tasks);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsError(true);
+      });
+  }, []);
 
   const handleCompleted = (id) => {
+    setIsStrikeout((current) => ({ ...current, id: id, state: true }));
     todoist
       .closeTask(id)
       .then((result) => {
         if (result) {
-          console.log(result);
-          setIsStrikeout((current) => ({ ...current, id: id, state: true }));
-          setTimeout(() => {
-            setIsStrikeout({ current: null, state: false });
-          }, 2000);
+          todoist
+            .getTasks({ projectId: 2287542106 })
+            .then((tasks) => {
+              setIsStrikeout({ current: null, state: false });
+              setTasks(tasks);
+              setIsLoading(false);
+            })
+            .catch((err) => {
+              console.log(err);
+              setIsError(true);
+            });
         }
       })
       .catch((err) => console.error(err));
