@@ -17,11 +17,13 @@ export default function Currency() {
   //     refreshInterval: 300000,
   //   });
 
+  console.log(new Date(1670848562 * 1000));
+
   const isLoading = false;
   const data = { result: "n/a" };
 
-  const response = fetch("/.netlify/functions/getCurrency");
-  console.log(response);
+  // const response = fetch("/.netlify/functions/getCurrency");
+  // console.log(response);
 
   return (
     <div className="flex flex-col gap-4">
