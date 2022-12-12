@@ -21,7 +21,7 @@ export default function Weather() {
   const blurb = `It's ${Math.round(data?.current?.temp)}\u00B0C,
   feels like ${Math.round(
     data?.current?.feels_like
-  )} \u00B0C and the wind is ${Math.round(
+  )}\u00B0C and the wind is ${Math.round(
     data?.current?.wind_speed * 3.6
   )} km/hr`;
 
