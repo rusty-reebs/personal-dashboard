@@ -69,7 +69,7 @@ export default function Todos() {
       ) : state.isLoading ? (
         <Loader variant="dots" color="#AF0404" className="mx-auto my-auto" />
       ) : (
-        <div className="grid grid-cols-2 grid-flow-row auto-cols-fr gap-2 py-2 overflow-y-auto">
+        <div className="grid grid-cols-2 grid-flow-row auto-cols-fr gap-4 py-2 overflow-y-auto">
           {state.tasks
             .filter((task) => new Date(task.due.date) <= new Date())
             .map((task) => (
@@ -77,12 +77,12 @@ export default function Todos() {
                 <div className="flex flex-row gap-3 items-center">
                   <Checkbox
                     size="sm"
-                    className=""
+                    className="self-start"
                     onChange={() => handleCompleted(task.id)}
                   />
-                  <div className="flex flex-col">
+                  <div className="flex flex-col gap-1">
                     <p
-                      className={`${
+                      className={`leading-4 ${
                         state.isStrikeout.id == task.id &&
                         state.isStrikeout.state
                           ? "line-through"
