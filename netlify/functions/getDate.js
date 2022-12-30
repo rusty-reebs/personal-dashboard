@@ -11,15 +11,9 @@ exports.handler = async function (event, context) {
   try {
     const record = await getDoc(docRef);
     const result = record.data();
-    console.log(result);
     const today = format(new Date(), "MMM d");
-    console.log("👉 today", today);
-    const resultDate = format(new Date(result.date.seconds * 1000), "MMM d");
-    console.log("👉 resultDate", resultDate);
-    if (
-      format(new Date(), "MMM d") ===
-      format(new Date(result.date.seconds * 1000), "MMM d")
-    ) {
+    const resultDate = format(new Date(result.date), "MMM d");
+    if (today == resultDate) {
       return {
         statusCode: 200,
         body: JSON.stringify({ date: true, data: result }),

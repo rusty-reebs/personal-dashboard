@@ -4,6 +4,7 @@ exports.handler = async function (event, context) {
   const headers = {
     headers: {
       apikey: `${process.env.VITE_CURRENCY_API_KEY}`,
+      "Access-Control-Allow-Origin": "*",
     },
   };
 
@@ -13,15 +14,17 @@ exports.handler = async function (event, context) {
     headers
   );
 
-  console.log(btc.data);
-
   const data = {
-    date: new Date(btc.data.info.timestamp * 1000),
     btc: btc.data.result,
   };
+  console.log("getBtc data", data);
   //return fetched data
   return {
     statusCode: 200,
     body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
   };
 };

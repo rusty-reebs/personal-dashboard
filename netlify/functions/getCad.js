@@ -4,6 +4,7 @@ exports.handler = async function (event, context) {
   const headers = {
     headers: {
       apikey: `${process.env.VITE_CURRENCY_API_KEY}`,
+      "Access-Control-Allow-Origin": "*",
     },
   };
 
@@ -16,8 +17,6 @@ exports.handler = async function (event, context) {
   //   "http://api.apilayer.com/exchangerates_data/convert?to=usd&from=btc&amount=1",
   //   headers
   // );
-
-  console.log(cad.data);
 
   const data = {
     date: new Date(cad.data.info.timestamp * 1000),

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Loader } from "@mantine/core";
 import useSWR from "swr";
 import { db } from "../../src/firebase/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { format } from "date-fns";
 
 export default function Currency() {
@@ -48,13 +48,29 @@ export default function Currency() {
 
           // update db
           const docRef = doc(db, "data", "currency");
-          const document = await setDoc(docRef, {
+          const document = await updateDoc(docRef, {
             cad: response.cad,
             // btc: btc.result,
             date: response.date,
           });
+          setCAD(response.cad);
+        } catch (err) {
+          console.log(err.toString());
+        }
+        try {
+          const res = await fetch(
+            "http://127.0.0.1:9999/.netlify/functions/getBtc"
+          );
+          const text = await res.text();
+          const response = JSON.parse(text);
+          console.log(response);
 
+          const docRef = doc(db, "data", "currency");
+          const document = await updateDoc(docRef, {
+            btc: response.btc,
+          });
           console.log(document);
+          setBTC(response.btc);
         } catch (err) {
           console.log(err.toString());
         }
@@ -72,8 +88,14 @@ export default function Currency() {
         <Loader variant="dots" color="#AF0404" className="mx-auto mb-8" />
       ) : (
         <div className="flex flex-col">
-          <div>1 USD = {CAD} CAD</div>
-          <div>BTC Price = {BTC}</div>
+          <div>
+            1 <span className="text-xs">USD</span> ={" "}
+            {parseFloat(CAD).toFixed(3)} <span className="text-xs">CAD</span>
+          </div>
+          <div>
+            1 <span className="text-xs">BTC</span> ={" "}
+            {parseFloat(BTC).toFixed(0)} <span className="text-xs">USD</span>
+          </div>
         </div>
       )}
     </div>
