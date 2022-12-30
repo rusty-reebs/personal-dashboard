@@ -10,13 +10,9 @@ export default function Weather() {
       { mode: "cors" }
     ).then((result) => result.json());
 
-  const {
-    data,
-    // data: {
-    //   current: { feels_like, temp, wind_speed },
-    // },
-    isLoading,
-  } = useSWR(`/weather`, fetcher, { refreshInterval: 300000 });
+  const { data, isLoading } = useSWR(`/weather`, fetcher, {
+    refreshInterval: 300000,
+  });
 
   const blurb = `It's ${Math.round(data?.current?.temp)}\u00B0C,
   feels like ${Math.round(

@@ -8,7 +8,6 @@ exports.handler = async function (event, context) {
     },
   };
 
-  //fetch
   const btc = await axios(
     "http://api.apilayer.com/exchangerates_data/convert?to=usd&from=btc&amount=1",
     headers
@@ -17,8 +16,6 @@ exports.handler = async function (event, context) {
   const data = {
     btc: btc.data.result,
   };
-  console.log("getBtc data", data);
-  //return fetched data
   return {
     statusCode: 200,
     body: JSON.stringify(data),

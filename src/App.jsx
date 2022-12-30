@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Calendar from "./components/Calendar";
 import Greeting from "./components/Greeting";
+import MonthGoals from "./components/MonthGoals";
+import Note from "./components/Note";
 import Todos from "./components/Todos";
 
 function App() {
@@ -9,6 +11,8 @@ function App() {
       <Greeting />
       <Todos />
       <Calendar />
+      <Note />
+      <MonthGoals />
     </div>
   );
 }

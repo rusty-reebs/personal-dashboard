@@ -8,21 +8,16 @@ exports.handler = async function (event, context) {
     },
   };
 
-  //fetch
   const cad = await axios(
     "http://api.apilayer.com/exchangerates_data/convert?to=cad&from=usd&amount=1",
     headers
   );
-  // const btc = await axios(
-  //   "http://api.apilayer.com/exchangerates_data/convert?to=usd&from=btc&amount=1",
-  //   headers
-  // );
 
   const data = {
     date: new Date(cad.data.info.timestamp * 1000),
     cad: cad.data.result,
   };
-  //return fetched data
+
   return {
     statusCode: 200,
     body: JSON.stringify(data),

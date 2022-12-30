@@ -3,10 +3,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { format } from "date-fns";
 
 exports.handler = async function (event, context) {
-  // needs to check if currency has been fetched today already
-  // check the firestore for existing currency, and if not, get the currency and then save it to db
-  // then return the data
-
   const docRef = doc(db, "data", "currency");
   try {
     const record = await getDoc(docRef);
