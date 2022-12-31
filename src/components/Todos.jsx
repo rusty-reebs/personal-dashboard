@@ -2,9 +2,11 @@ import { TodoistApi } from "@doist/todoist-api-typescript";
 import { Checkbox } from "@mantine/core";
 import { useEffect, useReducer } from "react";
 import { Loader } from "@mantine/core";
+import format from "date-fns/format";
 
 export default function Todos() {
   const todoist = new TodoistApi(import.meta.env.VITE_TODOIST_BEARER_TOKEN);
+  const endToday = format(new Date(), "yyyy-MM-dd");
 
   const initialState = {
     tasks: [],
@@ -71,7 +73,7 @@ export default function Todos() {
       ) : (
         <div className="grid grid-cols-2 grid-flow-row auto-cols-fr gap-4 py-2 overflow-y-auto">
           {state.tasks
-            .filter((task) => new Date(task.due.date) <= new Date())
+            .filter((task) => task.due.date <= endToday)
             .map((task) => (
               <div key={task.id} className="flex flex-col">
                 <div className="flex flex-row gap-3 items-center">

@@ -7,25 +7,17 @@ export default function Currency() {
   const [CAD, setCAD] = useState("");
   const [BTC, setBTC] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  // const fetcher = () =>
-  //   fetch(
-  //     `https://api.apilayer.com/exchangerates_data/convert?to=cad&from=usd&amount=1`,
-  //     {
-  //       mode: "cors",
-  //       headers: {
-  //         apikey: `${import.meta.env.VITE_CURRENCY_API_KEY}`,
-  //       },
-  //     }
-  //   ).then((result) => result.json());
 
-  //   const { data, isLoading } = useSWR(`/currency`, fetcher, {
-  //     refreshInterval: 300000,
-  //   });
+  const docRef = doc(db, "data", "currency");
 
   const updateCurrency = async () => {
     try {
       const res = await fetch(
-        "http://127.0.0.1:9999/.netlify/functions/getDate"
+        `${
+          import.meta.env.DEV
+            ? "http://127.0.0.1:9999/.netlify/functions/getDate"
+            : "/.netlify/functions/getDate"
+        }`
       );
       const text = await res.text();
       const response = JSON.parse(text);
@@ -38,15 +30,16 @@ export default function Currency() {
         // get new currency data and save to db
         try {
           const res = await fetch(
-            "http://127.0.0.1:9999/.netlify/functions/getCad"
+            `${
+              import.meta.env.DEV
+                ? "http://127.0.0.1:9999/.netlify/functions/getCad"
+                : "/.netlify/functions/getCad"
+            }`
           );
           const text = await res.text();
           const response = JSON.parse(text);
-          console.log(response);
-
           // update db
-          const docRef = doc(db, "data", "currency");
-          const document = await updateDoc(docRef, {
+          await updateDoc(docRef, {
             cad: response.cad,
             date: response.date,
           });
@@ -56,14 +49,16 @@ export default function Currency() {
         }
         try {
           const res = await fetch(
-            "http://127.0.0.1:9999/.netlify/functions/getBtc"
+            `${
+              import.meta.env.DEV
+                ? "http://127.0.0.1:9999/.netlify/functions/getBtc"
+                : "/.netlify/functions/getBtc"
+            }`
           );
           const text = await res.text();
           const response = JSON.parse(text);
-          console.log(response);
 
-          const docRef = doc(db, "data", "currency");
-          const document = await updateDoc(docRef, {
+          await updateDoc(docRef, {
             btc: response.btc,
           });
           setBTC(response.btc);
