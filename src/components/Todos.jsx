@@ -1,8 +1,9 @@
 import { TodoistApi } from "@doist/todoist-api-typescript";
-import { Checkbox } from "@mantine/core";
-import { useEffect, useReducer } from "react";
+import { Checkbox, ActionIcon } from "@mantine/core";
+import { useEffect, useReducer, useState } from "react";
 import { Loader } from "@mantine/core";
 import format from "date-fns/format";
+import { TbCircleX, TbSquarePlus } from "react-icons/tb";
 
 export default function Todos() {
   const todoist = new TodoistApi(import.meta.env.VITE_TODOIST_BEARER_TOKEN);
@@ -11,6 +12,8 @@ export default function Todos() {
   const initialState = {
     tasks: [],
     isLoading: true,
+    isSaving: false,
+    isAdd: false,
     isError: false,
     isStrikeout: {
       id: null,
@@ -63,50 +66,112 @@ export default function Todos() {
       .catch((err) => console.error(err));
   };
 
+  const handleSubmit = (value) => {
+    dispatch({ isSaving: true });
+    todoist
+      .addTask({
+        content: value,
+      })
+      .then((result) => {
+        if (result) {
+          todoist
+            .getTasks({ projectId: 2287542106 })
+            .then((tasks) =>
+              dispatch({
+                tasks: tasks,
+                isSaving: false,
+                isAdd: false,
+              })
+            )
+            .catch((err) => {
+              console.log(err);
+              dispatch({ isError: true });
+            });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ isError: true });
+      });
+  };
+
   return (
     <div className="flex flex-col gap-4 p-8 rounded-lg bg-four border-[0.5px] border-three text-five">
-      <p className="text-lg">Today's Tasks</p>
+      <div className="flex flex-row justify-between">
+        <p className="text-lg">Today</p>
+        {state.isSaving ? (
+          <Loader variant="dots" color="#AF0404" className="self-center" />
+        ) : !state.isAdd ? (
+          <ActionIcon
+            variant="filled"
+            onClick={() => dispatch({ isAdd: true })}
+          >
+            <TbSquarePlus size={20} />
+          </ActionIcon>
+        ) : (
+          <ActionIcon
+            variant="filled"
+            onClick={() => dispatch({ isAdd: false })}
+          >
+            <TbCircleX size={20} />
+          </ActionIcon>
+        )}
+      </div>
       {state.isError ? (
         <div className="mx-auto my-auto">⚠️</div>
       ) : state.isLoading ? (
         <Loader variant="dots" color="#AF0404" className="mx-auto my-auto" />
       ) : (
-        <div className="grid grid-cols-2 grid-flow-row auto-cols-fr gap-4 py-2 overflow-y-auto">
-          {state.tasks
-            .filter((task) => task.due.date <= endToday)
-            .map((task) => (
-              <div key={task.id} className="flex flex-col">
-                <div className="flex flex-row gap-3 items-center">
-                  <Checkbox
-                    size="sm"
-                    className="self-start"
-                    onChange={() => handleCompleted(task.id)}
-                  />
-                  <div className="flex flex-col gap-1">
-                    <p
-                      className={`leading-4 ${
-                        state.isStrikeout.id == task.id &&
-                        state.isStrikeout.state
-                          ? "line-through"
-                          : null
-                      }`}
-                    >
-                      {task.content}
-                    </p>
-                    <p
-                      className={`text-xs italic uppercase ${
-                        state.isStrikeout.id == task.id &&
-                        state.isStrikeout.state
-                          ? "line-through"
-                          : null
-                      }`}
-                    >
-                      {task?.due?.string}
-                    </p>
+        <div className="flex flex-col gap-4 h-full">
+          <div className="grid grid-cols-2 grid-flow-row auto-cols-fr gap-4 py-2 overflow-y-auto">
+            {state.tasks
+              .filter((task) => task?.due?.date <= endToday || task.due == null)
+              .map((task) => (
+                <div key={task.id} className="flex flex-col">
+                  <div className="flex flex-row gap-3 items-center">
+                    <Checkbox
+                      size="sm"
+                      color="dark"
+                      className="self-start"
+                      onChange={() => handleCompleted(task.id)}
+                    />
+                    <div className="flex flex-col gap-1">
+                      <p
+                        className={`leading-4 ${
+                          state.isStrikeout.id == task.id &&
+                          state.isStrikeout.state
+                            ? "line-through"
+                            : null
+                        }`}
+                      >
+                        {task.content}
+                      </p>
+                      <p
+                        className={`text-xs italic uppercase ${
+                          state.isStrikeout.id == task.id &&
+                          state.isStrikeout.state
+                            ? "line-through"
+                            : null
+                        }`}
+                      >
+                        {task?.due?.string}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
+          {state.isAdd ? (
+            <input
+              type="text"
+              placeholder="Enter task"
+              autoFocus
+              onKeyDown={(e) => {
+                e.key === "Enter" ? handleSubmit(e.currentTarget.value) : null;
+              }}
+              className="mt-auto p-1 rounded-md bg-four border border-gray-100 focus:outline-three focus:appearance-none"
+            />
+          ) : null}
         </div>
       )}
     </div>

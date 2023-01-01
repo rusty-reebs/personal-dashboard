@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader } from "@mantine/core";
+import { Image, Loader } from "@mantine/core";
 import { db } from "../../src/firebase/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -82,13 +82,23 @@ export default function Currency() {
         <Loader variant="dots" color="#AF0404" className="mx-auto mb-8" />
       ) : (
         <div className="flex flex-col">
-          <div>
-            1 <span className="text-xs">USD</span> = $
-            {parseFloat(CAD).toFixed(3)} <span className="text-xs">CAD</span>
+          <div className="flex flex-row items-center gap-2">
+            1
+            <Image src="/img/united.png" alt="usd" height={20} width={20} /> = $
+            {parseFloat(CAD).toFixed(3)}
+            <span className="text-xs ml-2.5">
+              <Image src="/img/canada.png" alt="cdn" height={20} width={20} />
+            </span>
           </div>
-          <div>
-            1 <span className="text-xs">BTC</span> = ${btcWithComma}{" "}
-            <span className="text-xs">USD</span>
+          <div className="flex flex-row items-center gap-2">
+            1
+            <span className="text-xs">
+              <Image src="/img/bitcoin.png" alt="btc" height={20} width={20} />
+            </span>
+            = ${btcWithComma}
+            <span className="text-xs">
+              <Image src="/img/united.png" alt="usd" height={20} width={20} />
+            </span>
           </div>
         </div>
       )}

@@ -49,7 +49,6 @@ export default function Note() {
     <div className="flex flex-col gap-4 p-8 rounded-lg bg-four border-[0.5px] border-three text-five">
       <div className="flex flex-row justify-between">
         <p className="text-lg">Notes</p>
-
         {isSaving ? (
           <Loader variant="dots" color="#AF0404" className="self-center" />
         ) : (
@@ -65,6 +64,7 @@ export default function Note() {
           <textarea
             className="w-full h-full bg-transparent p-2 focus:outline-three focus:appearance-none resize-none"
             rows={8}
+            spellCheck="false"
             value={content}
             onChange={(e) => setContent(e.currentTarget.value)}
             onBlur={() => handleSave(content)}
