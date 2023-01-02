@@ -33,8 +33,7 @@ export default function Links() {
       <p className="text-lg">Links</p>
       <div className="flex flex-row gap-2">
         <a
-          href="
-          https://www.google.com/url?q=https://us02web.zoom.us/j/81063979092?pwd%3DaTNHSWRibjBzcHBuQ2VKWUZTTG9Udz09&sa=D&source=calendar&usd=2&usg=AOvVaw3-LdYIyC_Rre_QuXoots_t"
+          href={import.meta.env.VITE_MORNING}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -51,8 +50,7 @@ export default function Links() {
       </div>
       <div className="flex flex-row gap-2">
         <a
-          href="
-          https://www.google.com/url?q=https://us02web.zoom.us/j/83627148995?pwd%3DTm9vMEhTdmtGU2FlOW5XQ0RsTC91Zz09&sa=D&source=calendar&usd=2&usg=AOvVaw2Z0i27_sUxPRKeEOgHqK65"
+          href={import.meta.env.VITE_AFTERNOON}
           target="_blank"
           rel="noopener noreferrer"
         >
