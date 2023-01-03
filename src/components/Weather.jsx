@@ -10,7 +10,7 @@ export default function Weather() {
       { mode: "cors" }
     ).then((result) => result.json());
 
-  const { data, isLoading } = useSWR(`/weather`, fetcher, {
+  const { data, isLoading, error } = useSWR(`/weather`, fetcher, {
     refreshInterval: 300000,
   });
 
@@ -21,9 +21,13 @@ export default function Weather() {
     data?.current?.wind_speed * 3.6
   )} km/hr`;
 
+  if (error) console.log(error);
+
   return (
     <div className="flex flex-col gap-4">
-      {isLoading ? (
+      {error ? (
+        <div className="mx-auto my-auto">⚠️</div>
+      ) : isLoading ? (
         <Loader variant="dots" color="#AF0404" className="mx-auto mb-8" />
       ) : (
         <div className="flex flex-col gap-2 w-full text-sm">
@@ -31,8 +35,8 @@ export default function Weather() {
             <div className="flex flex-col gap-1 items-center">
               <p className="text-sm uppercase">Now</p>
               <Image
-                src={`/img/new${data.current.weather[0].icon}.png`}
-                alt={`${data.current.weather[0].icon}`}
+                src={`/img/new${data?.current?.weather[0]?.icon}.png`}
+                alt={`${data?.current?.weather[0]?.icon}`}
                 height={64}
                 fit="contain"
               />
@@ -40,8 +44,8 @@ export default function Weather() {
             <div className="flex flex-col gap-1 items-center">
               <p className="text-sm uppercase">Later</p>
               <Image
-                src={`/img/new${data.hourly[3].weather[0].icon}.png`}
-                alt={`${data.hourly[3].weather[0].icon}`}
+                src={`/img/new${data?.hourly[3]?.weather[0]?.icon}.png`}
+                alt={`${data?.hourly[3]?.weather[0]?.icon}`}
                 height={64}
                 fit="contain"
               />
@@ -49,8 +53,8 @@ export default function Weather() {
             <div className="flex flex-col gap-1 items-center">
               <p className="text-sm uppercase">Tomorrow</p>
               <Image
-                src={`/img/new${data.daily[1].weather[0].icon}.png`}
-                alt={`${data.daily[1].weather[0].icon}`}
+                src={`/img/new${data?.daily[1]?.weather[0]?.icon}.png`}
+                alt={`${data?.daily[1]?.weather[0]?.icon}`}
                 height={64}
                 fit="contain"
               />

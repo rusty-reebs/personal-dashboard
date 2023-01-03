@@ -1,6 +1,6 @@
 import { TodoistApi } from "@doist/todoist-api-typescript";
 import { Checkbox, ActionIcon } from "@mantine/core";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { Loader } from "@mantine/core";
 import format from "date-fns/format";
 import { TbCircleX, TbSquarePlus } from "react-icons/tb";
@@ -29,8 +29,7 @@ export default function Todos() {
     initialState
   );
 
-  //? put this in a setInterval?
-  useEffect(() => {
+  const fetchTodos = async () => {
     todoist
       .getTasks({ projectId: 2287542106 })
       .then((tasks) => {
@@ -40,6 +39,17 @@ export default function Todos() {
         console.log(err);
         dispatch({ isError: true });
       });
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("focus", fetchTodos());
+    return () => {
+      window.removeEventListener("focus", fetchTodos());
+    };
   }, []);
 
   const handleCompleted = (id) => {
