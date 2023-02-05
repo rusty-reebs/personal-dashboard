@@ -2,13 +2,21 @@ import { Image, Loader } from "@mantine/core";
 import useSWR from "swr";
 
 export default function Weather() {
-  const fetcher = () =>
-    fetch(
+  const fetcher = async () => {
+    const res = await fetch(
       `https://api.openweathermap.org/data/2.5/onecall?lat=11.25292&lon=-85.87049&exclude=minutely&appid=${
         import.meta.env.VITE_WEATHER_API_KEY
       }&units=metric`,
       { mode: "cors" }
-    ).then((result) => result.json());
+    );
+    if (!res.ok) {
+      const error = new Error("An error occurred while fetching!");
+      error.info = await res.json();
+      error.status = res.status;
+      throw error;
+    }
+    return await res.json();
+  };
 
   const { data, isLoading, error } = useSWR(`/weather`, fetcher, {
     refreshInterval: 300000,
@@ -20,8 +28,6 @@ export default function Weather() {
   )}\u00B0C and the wind is ${Math.round(
     data?.current?.wind_speed * 3.6
   )} km/hr`;
-
-  if (error) console.log(error);
 
   return (
     <div className="flex flex-col gap-4">

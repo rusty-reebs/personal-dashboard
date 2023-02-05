@@ -4,6 +4,7 @@ import Currency from "./Currency";
 import Weather from "./Weather";
 
 export default function Greeting() {
+  console.count("Greeting");
   const useTime = () => {
     const [hour, setHour] = useState(format(new Date(), "H"));
     setInterval(() => {

@@ -3,6 +3,7 @@ import Greeting from "./components/Greeting";
 import MonthGoals from "./components/MonthGoals";
 import Note from "./components/Note";
 import Todos from "./components/Todos";
+import Pocket from "./components/Pocket";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Links />
       <Note />
       <MonthGoals />
+      <Pocket />
     </div>
   );
 }

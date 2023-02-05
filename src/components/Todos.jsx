@@ -6,6 +6,7 @@ import format from "date-fns/format";
 import { TbCircleX, TbSquarePlus } from "react-icons/tb";
 
 export default function Todos() {
+  console.count("Todos");
   const todoist = new TodoistApi(import.meta.env.VITE_TODOIST_BEARER_TOKEN);
   const endToday = format(new Date(), "yyyy-MM-dd");
 
@@ -15,6 +16,7 @@ export default function Todos() {
     isSaving: false,
     isAdd: false,
     isError: false,
+    errorMessage: "",
     isStrikeout: {
       id: null,
       state: false,
@@ -37,7 +39,7 @@ export default function Todos() {
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ isError: true });
+        dispatch({ isError: true, errorMessage: err.toString() });
       });
   };
 
@@ -69,7 +71,7 @@ export default function Todos() {
             })
             .catch((err) => {
               console.log(err);
-              dispatch({ isError: true });
+              dispatch({ isError: true, errorMessage: err.toString() });
             });
         }
       })
@@ -95,13 +97,13 @@ export default function Todos() {
             )
             .catch((err) => {
               console.log(err);
-              dispatch({ isError: true });
+              dispatch({ isError: true, errorMessage: err.toString() });
             });
         }
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ isError: true });
+        dispatch({ isError: true, errorMessage: err.toString() });
       });
   };
 
@@ -128,7 +130,7 @@ export default function Todos() {
         )}
       </div>
       {state.isError ? (
-        <div className="mx-auto my-auto">⚠️</div>
+        <div className="mx-auto my-auto">⚠️ {state.errorMessage}</div>
       ) : state.isLoading ? (
         <Loader variant="dots" color="#AF0404" className="mx-auto my-auto" />
       ) : (

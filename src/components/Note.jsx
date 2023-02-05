@@ -59,7 +59,7 @@ export default function Note() {
       </div>
       <div className="">
         {isLoading ? (
-          <Loader variant="dots" color="#AF0404" className="mx-auto" />
+          <Loader variant="dots" color="#AF0404" className="mx-auto mt-10" />
         ) : (
           <textarea
             className="w-full h-full bg-transparent p-2 focus:outline-three focus:appearance-none resize-none"

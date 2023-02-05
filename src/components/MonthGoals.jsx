@@ -16,6 +16,7 @@ export default function MonthGoals() {
     maint: false,
     isLoading: true,
     isError: false,
+    errorMessage: "",
   };
 
   const [state, dispatch] = useReducer(
@@ -42,7 +43,7 @@ export default function MonthGoals() {
           dispatch({ ...newMonth });
         } catch (err) {
           console.log(err);
-          dispatch({ isError: true });
+          dispatch({ isError: true, errorMessage: err.toString() });
         }
       } else {
         dispatch({
@@ -70,7 +71,7 @@ export default function MonthGoals() {
       <p className="text-lg">{format(new Date(today), "MMMM yyyy")}</p>
       <div className="flex flex-col gap-3">
         {state.isError ? (
-          <div className="mx-auto my-auto">⚠️</div>
+          <div className="mx-auto my-auto">⚠️ {state.errorMessage}</div>
         ) : state.isLoading ? (
           <Loader variant="dots" color="#AF0404" className="mx-auto mt-10" />
         ) : (
