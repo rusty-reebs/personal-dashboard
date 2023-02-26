@@ -1,6 +1,6 @@
 import { ActionIcon, Image } from "@mantine/core";
 import { useEffect, useState } from "react";
-import useClock from "../hooks/useClock";
+// import useClock from "../hooks/useClock";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 
 export default function Links() {
