@@ -3,6 +3,7 @@ import { ActionIcon, Loader } from "@mantine/core";
 import { FiArchive, FiExternalLink } from "react-icons/fi";
 import { FaGetPocket } from "react-icons/fa";
 import { BsStar, BsStarFill, BsTrash2 } from "react-icons/bs";
+import { pocketAction } from "../_helpers/pocketAction";
 
 export default function Pocket() {
   const [reads, setReads] = useState([]);
@@ -11,31 +12,28 @@ export default function Pocket() {
   const [view, setView] = useState("all");
 
   useEffect(() => {
-    // const getPocket = async () => {
-    //   try {
-    //     const result = await fetch(
-    //       `${
-    //         import.meta.env.DEV
-    //           ? "http://localhost:9999/.netlify/functions/getPocket"
-    //           : "/.netlify/functions/getPocket"
-    //       }`
-    //     );
-    //     setIsLoading(false);
-    //     // const arr = Object.values(result.list);
-    //     // console.log(arr);
-    //     setReads(result);
-    //   } catch (err) {
-    //     setIsError(err);
-    //     console.log(err);
-    //   }
-    // };
-    // getPocket();
-    // const parsed = JSON.parse(dummyData);
-    // setReads(parsed);
-    const pocketObjects = Object.values(dummyData.list);
-    // console.log(pocketObjects);
-    setReads(pocketObjects);
-    setIsLoading(false);
+    const getPocket = async () => {
+      try {
+        const result = await fetch(
+          `${
+            import.meta.env.DEV
+              ? "http://localhost:9999/.netlify/functions/getPocket"
+              : "/.netlify/functions/getPocket"
+          }`
+        );
+
+        const resultText = await result.text();
+        const resultParsed = JSON.parse(resultText);
+        const listObjects = Object.values(resultParsed.list);
+        console.log("listObjects", listObjects);
+        setReads(listObjects);
+        setIsLoading(false);
+      } catch (err) {
+        setIsError(err);
+        console.log(err);
+      }
+    };
+    getPocket();
   }, []);
 
   return (
@@ -70,12 +68,16 @@ export default function Pocket() {
                 key={each.item_id}
                 className="group flex flex-row justify-between text-sm py-2 px-3 hover:py-[0.427rem] hover:border hover:border-three hover:rounded-md hover:bg-one"
               >
-                <div className="flex flex-col basis-3/4">
+                <a
+                  className="flex flex-col basis-3/4 hover:cursor-pointer"
+                  href={each.resolved_url}
+                  target="_blank"
+                >
                   <div className="">{each.resolved_title}</div>
                   <div className="italic text-xs whitespace-nowrap">
                     {each.time_to_read ? `${each?.time_to_read} MIN` : ""}
                   </div>
-                </div>
+                </a>
                 <div className="hidden group-hover:flex flex-row gap-2">
                   {each.favorite == "1" ? (
                     <BsStarFill size={15} className="text-yellow-300" />
@@ -83,7 +85,10 @@ export default function Pocket() {
                     <BsStar size={15} />
                   )}
                   <FiArchive size={15} />
-                  <BsTrash2 size={15} />
+                  <BsTrash2
+                    size={15}
+                    onClick={() => pocketAction("delete", each.item_id)}
+                  />
                 </div>
               </div>
             ))}

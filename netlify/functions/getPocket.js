@@ -20,12 +20,9 @@ export async function handler(event, context) {
       data,
       config
     );
-    console.log(pocket);
-    const result = JSON.stringify(pocket.data);
-    console.log(result);
     return {
       statusCode: 200,
-      body: result,
+      body: JSON.stringify(pocket.data),
       headers: {
         "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin": "*",
