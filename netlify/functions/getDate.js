@@ -2,7 +2,7 @@ import { db } from "../../src/firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { format } from "date-fns";
 
-exports.handler = async function (event, context) {
+export async function handler(event, context) {
   const docRef = doc(db, "data", "currency");
   try {
     const record = await getDoc(docRef);
@@ -31,4 +31,4 @@ exports.handler = async function (event, context) {
   } catch (err) {
     console.log(err);
   }
-};
+}

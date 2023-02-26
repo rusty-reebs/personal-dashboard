@@ -1,6 +1,6 @@
 import axios from "axios";
 
-exports.handler = async function (event, context) {
+export async function handler(event, context) {
   const headers = {
     headers: {
       apikey: `${process.env.VITE_CURRENCY_API_KEY}`,
@@ -24,4 +24,4 @@ exports.handler = async function (event, context) {
       "Access-Control-Allow-Origin": "*",
     },
   };
-};
+}

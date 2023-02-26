@@ -1,6 +1,6 @@
 import axios from "axios";
 
-exports.handler = async function (event, context) {
+export async function handler(event, context) {
   const config = {
     method: "POST",
     headers: {
@@ -20,9 +20,12 @@ exports.handler = async function (event, context) {
       data,
       config
     );
+    console.log(pocket);
+    const result = JSON.stringify(pocket.data);
+    console.log(result);
     return {
       statusCode: 200,
-      body: JSON.stringify(pocket.data),
+      body: result,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin": "*",
@@ -35,4 +38,4 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(err.message),
     };
   }
-};
+}
