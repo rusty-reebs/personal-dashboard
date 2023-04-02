@@ -5,7 +5,7 @@ const access_token = `${import.meta.env.VITE_POCKET_ACCESS_TOKEN}`;
 
 export async function pocketAction(action, id) {
   const config = {
-    // method: "POST",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",

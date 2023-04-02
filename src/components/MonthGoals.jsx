@@ -67,7 +67,7 @@ export default function MonthGoals() {
   const checkboxStyle = {};
 
   return (
-    <div className="flex flex-col gap-7 mt-auto">
+    <div className="flex flex-col gap-7 mt-auto mb-8">
       <p className="text-lg">{format(new Date(today), "MMMM yyyy")}</p>
       <div className="flex flex-col gap-3">
         {state.isError ? (

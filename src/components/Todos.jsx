@@ -38,7 +38,6 @@ export default function Todos() {
     todoist
       .getTasks({ projectId: 2287542106 })
       .then((tasks) => {
-        console.log(tasks);
         dispatch({ tasks: tasks, isLoading: false });
       })
       .catch((err) => {
@@ -84,7 +83,6 @@ export default function Todos() {
   };
 
   const handleSubmit = (value) => {
-    console.log("isToday", state.isToday);
     dispatch({ isSaving: true });
     todoist
       .addTask({
@@ -143,6 +141,10 @@ export default function Todos() {
       ) : (
         <div className="flex flex-col gap-4 h-full">
           <div className="grid grid-cols-2 grid-flow-row auto-cols-fr gap-4 py-2">
+            {!state.tasks.filter((task) => task?.due?.date <= endToday)
+              .length && (
+              <div className="col-span-2 mx-auto">🎉 All done! 🎉</div>
+            )}
             {state.tasks
               .filter((task) => task?.due?.date <= endToday)
               .map((task) => (

@@ -11,10 +11,10 @@ export default function Links() {
   // const time = useClock();
 
   const morningMeeting = new Date();
-  morningMeeting.setHours(9, 30, 0);
+  morningMeeting.setHours(8, 30, 0);
 
   const afternoonMeeting = new Date();
-  afternoonMeeting.setHours(14, 0, 0);
+  afternoonMeeting.setHours(13, 0, 0);
 
   // useEffect(() => {
   //   const diff = differenceInMinutes(
@@ -42,7 +42,7 @@ export default function Links() {
             <Image src="/img/zoom.png" alt="zoom" height={20} width={20} />
           </ActionIcon>
         </a>
-        Morning meeting <span className="text-xs self-center">9:30AM</span>
+        Morning meeting <span className="text-xs self-center">8:30AM</span>
         {isSoon && new Date().getHours() < 12 ? (
           <Soon />
         ) : isNow && new Date().getHours() < 12 ? (
@@ -59,7 +59,7 @@ export default function Links() {
             <Image src="/img/zoom.png" alt="zoom" height={20} width={20} />
           </ActionIcon>
         </a>
-        Afternoon meeting <span className="text-xs self-center">2:00PM</span>
+        Afternoon meeting <span className="text-xs self-center">1:00PM</span>
         {isSoon && new Date().getHours() > 12 ? (
           <Soon />
         ) : isNow && new Date().getHours() > 12 ? (
