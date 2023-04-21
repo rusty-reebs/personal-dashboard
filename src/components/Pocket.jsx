@@ -27,7 +27,7 @@ export default function Pocket() {
         const resultParsed = JSON.parse(resultText);
         const listObjects = Object.values(resultParsed.list);
         console.log("listObjects", listObjects);
-        setAll(listObjects);
+        setAll(() => sortReads(listObjects));
         setIsLoading(false);
       } catch (err) {
         console.log(err);
@@ -67,6 +67,12 @@ export default function Pocket() {
       console.log(err);
       setErrorMessage(err.toString());
     }
+  };
+
+  const sortReads = (arr) => {
+    return arr.sort((a, b) => {
+      return b.time_added - a.time_added;
+    });
   };
 
   return (
