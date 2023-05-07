@@ -101,11 +101,11 @@ export default function Pocket() {
         ) : isLoading ? (
           <Loader variant="dots" color="#AF0404" className="mx-auto my-auto" />
         ) : (
-          <div className="flex flex-col">
+          <div className="flex flex-col p-1">
             {reads?.map((each) => (
               <div
                 key={each.item_id}
-                className="group flex flex-row justify-between text-sm py-2 px-3 hover:py-[0.427rem] hover:border hover:border-three hover:rounded-md hover:bg-one"
+                className="group flex flex-row justify-between text-sm py-2 px-3 hover:border hover:border-three hover:rounded-md hover:bg-one hover:-m-[1px]"
               >
                 <a
                   className="flex flex-col basis-2/3 hover:cursor-pointer"
